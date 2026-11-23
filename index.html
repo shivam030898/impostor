@@ -186,6 +186,7 @@ details[open] .chev { transform: rotate(180deg); }
 .tilt.idle .foil { animation: sheen 5s ease-in-out infinite; }
 @keyframes sheen { 0%,100% { background-position: 0% 10%; } 50% { background-position: 100% 90%; } }
 .front {
+  transform: translateZ(1px);
   border: 2px solid transparent;
   background:
     repeating-linear-gradient(125deg, rgba(255,255,255,.035) 0 2px, transparent 2px 7px) padding-box,
@@ -218,11 +219,23 @@ details[open] .chev { transform: rotate(180deg); }
 .pulse::after { content: ""; position: absolute; inset: -5px; border-radius: 50%; border: 1px solid var(--accent); animation: ping 1.6s ease-out infinite; }
 @keyframes ping { from { transform: scale(.5); opacity: .9; } to { transform: scale(1.6); opacity: 0; } }
 .back {
-  transform: rotateY(180deg); color: var(--ink);
-  background: radial-gradient(120% 80% at 50% 0%, #ffffff, transparent 60%), linear-gradient(165deg, #fbf7f0, #ece6ff);
+  /* translateZ keeps the two faces apart so Safari doesn't flicker their edges into each other */
+  transform: rotateY(180deg) translateZ(1px); color: var(--ink);
+  border: 2px solid transparent;
+  background:
+    radial-gradient(120% 80% at 50% 0%, #ffffff, transparent 60%) padding-box,
+    linear-gradient(165deg, #fbf7f0, #ece6ff) padding-box,
+    conic-gradient(from var(--ang), #7b83ff, #6ee7f0, #ffd36b, #ff6b57, #c08bff, #7b83ff) border-box;
+  animation: rim 5s linear infinite;
 }
 .back .foil { mix-blend-mode: soft-light; opacity: 1; }
-.back.imp { color: #fff; background: radial-gradient(120% 80% at 50% 0%, #ff9a7a, transparent 60%), linear-gradient(165deg, #ff6b57, #d93b4a); }
+.back.imp {
+  color: #fff;
+  background:
+    radial-gradient(120% 80% at 50% 0%, #ff9a7a, transparent 60%) padding-box,
+    linear-gradient(165deg, #ff6b57, #d93b4a) padding-box,
+    conic-gradient(from var(--ang), #ffd36b, #ff8a5c, #ff3d6e, #ffb3c1, #ffd36b) border-box;
+}
 .back > *:not(.foil):not(.corner) { position: relative; z-index: 1; }
 .front { transition: visibility 0s .22s; }
 .back { visibility: hidden; transition: visibility 0s .22s; }
